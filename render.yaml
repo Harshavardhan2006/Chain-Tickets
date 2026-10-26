@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: blockchain-event-ticketing
+    runtime: docker
+    plan: free
+    branch: main

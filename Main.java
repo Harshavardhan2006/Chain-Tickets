@@ -51,7 +51,15 @@ public class Main {
             System.out.println("Save this now, it will not be shown again");
         }
 
-        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 8090), 0);
+        int port = 8090;
+        String envPort = System.getenv("PORT");
+        if (envPort != null && !envPort.trim().isEmpty()) {
+            try {
+                port = Integer.parseInt(envPort.trim());
+            } catch (NumberFormatException ignored) {}
+        }
+
+        HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0);
         boolean demo = args.length > 0 && args[0].equals("--demo");
 
         register(server, "/api/events", "GET", p -> toJson(system.getEvents()));
@@ -191,7 +199,7 @@ public class Main {
         });
 
         server.start();
-        System.out.println("Server running at http://localhost:8090");
+        System.out.println("Server running on port " + port);
         if (demo) {
             System.out.println("Demo mode: tamper endpoint enabled");
         }

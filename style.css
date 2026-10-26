@@ -55,6 +55,7 @@ a { color: var(--accent); }
     top: 0;
     z-index: 20;
     background: rgba(255, 255, 255, 0.9);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
 }
@@ -132,8 +133,8 @@ a { color: var(--accent); }
 .role { font-size: 0.68rem; letter-spacing: 0.08em; color: var(--gold-text); font-weight: 600; }
 
 button {
-    appearance: none;
     -webkit-appearance: none;
+    appearance: none;
     font: inherit;
     border: none;
     background: transparent;
@@ -475,7 +476,7 @@ dialog.modal {
     box-shadow: 0 24px 60px rgba(28, 35, 51, 0.25);
 }
 
-dialog.modal::backdrop { background: rgba(28, 35, 51, 0.4); backdrop-filter: blur(2px); }
+dialog.modal::backdrop { background: rgba(28, 35, 51, 0.4); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
 dialog.modal h3 { margin-top: 0; }
 .modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
 

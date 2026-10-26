@@ -1,0 +1,8 @@
+.git
+.vscode
+*.class
+chain.dat
+users.dat
+requests.dat
+*.log
+*.bak
