@@ -64,6 +64,7 @@ If an administrator account already exists, no password is generated or printed.
 | `POST` | `/api/auth/login` | Anyone | Authenticate with credentials and receive session cookie |
 | `POST` | `/api/auth/logout` | Anyone | Terminate active session and clear cookie |
 | `GET` | `/api/auth/me` | Logged-in | Retrieve username and role of current session |
+| `GET` | `/api/users` | Logged-in | List registered usernames for ticket transfer dropdown |
 | `GET` | `/api/tickets` | Logged-in | List tickets (USER sees owned tickets, ADMIN sees all) |
 | `GET` | `/api/requests/list` | Logged-in | List ticket requests (USER sees own, ADMIN sees all) |
 | `GET` | `/api/history?ticketId=...` | Owner / Admin | Retrieve full block audit trail for a specific ticket |
@@ -84,3 +85,7 @@ If an administrator account already exists, no password is generated or printed.
 4. **Unprotected Off-Chain Storage**: `users.dat` and `requests.dat` are append-only flat files without cryptographic hash chaining or digital signatures. Tampering with those files outside the application is not automatically detected by the blockchain.
 5. **Server-Enforced Ownership**: Ticket ownership verification and transfer authorizations are enforced by server session checks rather than by client-side public-key asymmetric digital signatures.
 6. **Tail Truncation Vulnerability**: Removing blocks from the end of `chain.dat` is not detected by internal chain validation because the remaining predecessor hashes remain intact. External recording of the ledger anchor (head hash and block height) is required to detect truncation.
+7. **No HTTPS / Transport Security**: Runs on a plain HTTP development server, so the `Secure` cookie attribute is omitted and credentials/session tokens travel unencrypted across networks outside localhost.
+8. **Transparency vs. Privacy Trade-Off**: The ledger explorer is open to all logged-in users, meaning ticket owners' usernames and block transactions are visible to other users on the system.
+9. **Off-Chain Request Modification & Unauthenticated Demo Tamper**: Request statuses can be modified by altering `requests.dat`, and when `--demo` mode is enabled, the memory tamper endpoint has no authentication.
+10. **No Password Reset or Account Recovery**: There is no self-service password reset. Administrator credential recovery requires removing the admin record from `users.dat` and restarting the application to regenerate bootstrap credentials.
