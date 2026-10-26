@@ -1,0 +1,8 @@
+*.class
+chain.dat
+users.dat
+requests.dat
+*.txt
+*.jar
+*.bak
+*.log
