@@ -43,7 +43,8 @@ public class Main {
         }
         system = new TicketSystem(blockchain);
         sessions = new Sessions();
-        String adminPassword = users.ensureAdmin();
+        String envAdminPass = System.getenv("ADMIN_PASSWORD");
+        String adminPassword = users.ensureAdmin(envAdminPass != null && !envAdminPass.trim().isEmpty() ? envAdminPass.trim() : null);
         if (adminPassword != null) {
             System.out.println("First run: admin account created");
             System.out.println("  username: admin");

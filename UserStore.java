@@ -114,6 +114,10 @@ public class UserStore {
     }
 
     public String ensureAdmin() {
+        return ensureAdmin(null);
+    }
+
+    public String ensureAdmin(String preferredPassword) {
         synchronized (this) {
             for (Credential credential : users.values()) {
                 if (credential.role().equals("ADMIN")) {
@@ -121,12 +125,16 @@ public class UserStore {
                 }
             }
         }
-        StringBuilder password = new StringBuilder();
-        for (int i = 0; i < 16; i++) {
-            password.append(PASSWORD_ALPHABET.charAt(RANDOM.nextInt(PASSWORD_ALPHABET.length())));
+        String password = preferredPassword;
+        if (password == null || password.length() < 8) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 16; i++) {
+                sb.append(PASSWORD_ALPHABET.charAt(RANDOM.nextInt(PASSWORD_ALPHABET.length())));
+            }
+            password = sb.toString();
         }
-        add("admin", "ADMIN", password.toString());
-        return password.toString();
+        add("admin", "ADMIN", password);
+        return password;
     }
 
     public User authenticate(String username, String password) {
