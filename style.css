@@ -538,11 +538,6 @@ dialog.modal h3 { margin-top: 0; }
     to { opacity: 1; transform: none; }
 }
 
-/* ==========================================================================
-   Responsive Breakpoints & Adaptations for All Screen Sizes
-   ========================================================================== */
-
-/* Tablets and medium screens (<= 880px) */
 @media (max-width: 880px) {
     .split {
         grid-template-columns: 1fr;
@@ -550,7 +545,6 @@ dialog.modal h3 { margin-top: 0; }
     }
 }
 
-/* Small tablets and mobile landscape (<= 768px) */
 @media (max-width: 768px) {
     .container {
         padding: 28px 16px 56px;
@@ -641,7 +635,6 @@ dialog.modal h3 { margin-top: 0; }
     }
 }
 
-/* Mobile phones portrait (<= 600px) */
 @media (max-width: 600px) {
     .container {
         padding: 20px 14px 48px;
@@ -719,7 +712,6 @@ dialog.modal h3 { margin-top: 0; }
     }
 }
 
-/* Very small screens / compact phones (<= 380px) */
 @media (max-width: 380px) {
     .container {
         padding: 16px 10px 40px;
@@ -749,7 +741,6 @@ dialog.modal h3 { margin-top: 0; }
     }
 }
 
-/* Large monitors & 4K displays (>= 1440px) */
 @media (min-width: 1440px) {
     .container, .header-inner, .site-footer {
         max-width: 1140px;
