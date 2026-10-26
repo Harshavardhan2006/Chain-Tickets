@@ -29,6 +29,7 @@
 
 html {
     -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 * { box-sizing: border-box; }
@@ -154,7 +155,6 @@ button.btn, a.btn, .btn {
     border-radius: 10px;
     border: 1px solid var(--accent);
     background: var(--accent);
-    background-color: var(--accent);
     color: #ffffff !important;
     font: inherit;
     font-weight: 600;
@@ -169,7 +169,6 @@ button.btn, a.btn, .btn {
 
 button.btn:hover, a.btn:hover, .btn:hover {
     background: var(--accent-hover);
-    background-color: var(--accent-hover);
     border-color: var(--accent-hover);
     color: #ffffff !important;
     box-shadow: 0 4px 12px rgba(31, 58, 110, 0.2);
@@ -183,14 +182,12 @@ button.btn:disabled, a.btn:disabled, .btn:disabled {
 
 button.btn.ghost, a.btn.ghost, .btn.ghost {
     background: var(--surface);
-    background-color: var(--surface);
     color: var(--text) !important;
     border: 1px solid var(--border-strong);
 }
 
 button.btn.ghost:hover, a.btn.ghost:hover, .btn.ghost:hover {
     background: var(--bg-soft);
-    background-color: var(--bg-soft);
     border-color: var(--border-strong);
     color: var(--text) !important;
     box-shadow: none;
@@ -198,14 +195,12 @@ button.btn.ghost:hover, a.btn.ghost:hover, .btn.ghost:hover {
 
 button.btn.danger, a.btn.danger, .btn.danger {
     background: var(--surface);
-    background-color: var(--surface);
     color: var(--bad) !important;
     border: 1px solid #e3b9b4;
 }
 
 button.btn.danger:hover, a.btn.danger:hover, .btn.danger:hover {
     background: var(--bad-bg);
-    background-color: var(--bad-bg);
     border-color: var(--bad);
     color: var(--bad) !important;
     box-shadow: none;
@@ -213,14 +208,12 @@ button.btn.danger:hover, a.btn.danger:hover, .btn.danger:hover {
 
 button.btn.success, a.btn.success, .btn.success {
     background: var(--ok);
-    background-color: var(--ok);
     border: 1px solid var(--ok);
     color: #ffffff !important;
 }
 
 button.btn.success:hover, a.btn.success:hover, .btn.success:hover {
     background: #0f5535;
-    background-color: #0f5535;
     border-color: #0f5535;
     color: #ffffff !important;
 }
@@ -279,7 +272,6 @@ input:focus, select:focus {
 .muted { color: var(--muted); }
 .small { font-size: 0.85rem; }
 .mono, code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 0.84rem; overflow-wrap: anywhere; word-break: break-all; }
-code { word-break: break-all; }
 
 .pill {
     display: inline-block;
@@ -381,7 +373,6 @@ code { word-break: break-all; }
 
 .table-wrap {
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: var(--surface);
@@ -417,7 +408,6 @@ th { background: var(--surface-2); color: var(--muted); font-weight: 600; font-s
     margin: 28px 0 8px;
     border-bottom: 1px solid var(--border);
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     white-space: nowrap;
 }
@@ -581,7 +571,6 @@ dialog.modal h3 { margin-top: 0; }
         width: 100%;
         order: 3;
         overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         flex-wrap: nowrap;
         padding: 6px 0 2px;
