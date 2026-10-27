@@ -4,3 +4,8 @@ services:
     runtime: docker
     plan: free
     branch: main
+    envVars:
+      - key: USER_NAME
+        value: harsha_06
+      - key: USER_PASSWORD
+        value: harsha1234

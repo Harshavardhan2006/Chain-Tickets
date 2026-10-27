@@ -145,13 +145,13 @@ On Render's Free tier, container file systems are stateless and spin down after 
 | Account | Role | Default Password | Environment Variable Override |
 | --- | --- | --- | --- |
 | `admin` | `ADMIN` | Generated on first run (or set via env) | `ADMIN_PASSWORD` |
+| `harsha_06` | `USER` | `harsha1234` | `USER_NAME` & `USER_PASSWORD` |
 | `user` | `USER` | `user12345` | Built-in fallback |
 | `alice` | `USER` | `correcthorse` | Built-in fallback |
 | `bob` | `USER` | `correcthorse` | Built-in fallback |
-| Custom User | `USER` | Defined via env | `USER_NAME` & `USER_PASSWORD` |
 
-- **One-Click Demo Login**: The `#/login` screen includes clickable chips (`user / user12345`, `alice / correcthorse`, `admin`) that auto-fill the login form instantly.
-- **Custom Persistent User on Render**: Set `USER_NAME` and `USER_PASSWORD` in the Render dashboard. ChainTickets will recreate your account with your credentials whenever the container wakes up.
+- **One-Click Demo Login**: The `#/login` screen includes clickable chips (`harsha_06 / harsha1234`, `user / user12345`, `alice / correcthorse`, `admin`) that auto-fill the login form instantly.
+- **Custom Persistent User on Render**: `render.yaml` pre-configures `USER_NAME=harsha_06` and `USER_PASSWORD=harsha1234`. You can also customize them under the Environment tab in the Render dashboard. ChainTickets ensures your account is always available whenever the container starts.
 - **Full Ledger Persistence**: Attach a Render Persistent Disk (e.g. mounted at `/data`) and set `DATA_DIR=/data` to permanently keep all dynamic user registrations, ticket transfers, and blockchain blocks across container redeploys.
 
 ---

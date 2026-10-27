@@ -263,6 +263,15 @@ function authView(mode) {
                 type: 'button',
                 class: 'btn ghost small demo-chip',
                 onclick: () => {
+                    username.value = 'harsha_06';
+                    password.value = 'harsha1234';
+                    username.focus();
+                }
+            }, 'harsha_06 / harsha1234'),
+            h('button', {
+                type: 'button',
+                class: 'btn ghost small demo-chip',
+                onclick: () => {
                     username.value = 'user';
                     password.value = 'user12345';
                     username.focus();

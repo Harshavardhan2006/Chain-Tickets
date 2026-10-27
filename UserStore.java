@@ -17,9 +17,11 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 public class UserStore {
-    public record User(String username, String role) {}
+    public record User(String username, String role) {
+    }
 
-    private record Credential(String role, int iterations, byte[] salt, byte[] hash) {}
+    private record Credential(String role, int iterations, byte[] salt, byte[] hash) {
+    }
 
     private static final int ITERATIONS = 600_000;
     private static final Pattern USERNAME = Pattern.compile("[a-z0-9_]{3,20}");
@@ -92,6 +94,23 @@ public class UserStore {
         users.put(name, credential);
     }
 
+    private void rewrite() {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, Credential> entry : users.entrySet()) {
+            Credential credential = entry.getValue();
+            sb.append(entry.getKey()).append("\t").append(credential.role()).append("\t")
+                    .append(credential.iterations()).append("\t")
+                    .append(Base64.getEncoder().encodeToString(credential.salt())).append("\t")
+                    .append(Base64.getEncoder().encodeToString(credential.hash())).append("\n");
+        }
+        try {
+            Files.writeString(file, sb.toString(), StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.SYNC);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
     private User add(String name, String role, String password) {
         byte[] salt = new byte[16];
         RANDOM.nextBytes(salt);
@@ -138,16 +157,28 @@ public class UserStore {
     }
 
     public void ensureUser(String username, String password) {
+        ensureUser(username, password, false);
+    }
+
+    public void ensureUser(String username, String password, boolean overwrite) {
         String name = normalize(username);
-        synchronized (this) {
-            if (users.containsKey(name)) {
-                return;
-            }
-        }
         if (password == null || password.length() < 8 || password.length() > 128) {
             return;
         }
-        add(name, "USER", password);
+        synchronized (this) {
+            if (users.containsKey(name)) {
+                if (!overwrite) {
+                    return;
+                }
+                byte[] salt = new byte[16];
+                RANDOM.nextBytes(salt);
+                Credential credential = new Credential(users.get(name).role(), ITERATIONS, salt, derive(password, salt, ITERATIONS));
+                users.put(name, credential);
+                rewrite();
+                return;
+            }
+            add(name, "USER", password);
+        }
     }
 
     public User authenticate(String username, String password) {

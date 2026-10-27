@@ -57,16 +57,16 @@ public class Main {
             System.out.println("  password: " + adminPassword);
             System.out.println("Save this now, it will not be shown again");
         }
+        users.ensureUser("harsha_06", "harsha1234", true);
         users.ensureUser("user", "user12345");
         users.ensureUser("alice", "correcthorse");
         users.ensureUser("bob", "correcthorse");
-        users.ensureUser("harsha_06", "user12345");
-        users.ensureUser("kanny_05", "user12345");
+        users.ensureUser("kanny_05", "harsha1234");
         String envUserName = System.getenv("USER_NAME");
         String envUserPass = System.getenv("USER_PASSWORD");
         if (envUserName != null && !envUserName.trim().isEmpty() && envUserPass != null && envUserPass.length() >= 8) {
             try {
-                users.ensureUser(envUserName.trim(), envUserPass.trim());
+                users.ensureUser(envUserName.trim(), envUserPass.trim(), true);
             } catch (IllegalArgumentException ignored) {}
         }
         String seedUsers = System.getenv("SEED_USERS");
