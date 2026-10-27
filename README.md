@@ -130,23 +130,29 @@ The repository includes a ready-to-use `render.yaml` specification for deploying
 2. Sign in to Render and create a **New Blueprint Instance** or **New Web Service** pointing to this repository.
 3. Configure environment variables in the Render dashboard:
    - `ADMIN_PASSWORD`: Your secret administrator password.
+   - `USER_NAME`: (Optional) Your preferred persistent user username (e.g. `harsha`).
+   - `USER_PASSWORD`: (Optional) Your preferred persistent user password (e.g. `Password123`, min 8 chars).
+   - `SEED_USERS`: (Optional) Additional comma-separated users (`user1:pass1,user2:pass2`).
+   - `DATA_DIR`: (Optional) Path to a mounted Render Persistent Disk (e.g. `/data`) for full permanent storage of dynamic registrations.
 4. Render automatically reads the Dockerfile, binds to `$PORT`, and serves the application with automated HTTPS.
 
 ---
 
-## Administrator Account Bootstrap
+## Default Accounts & Cloud Persistence
 
-When the server starts for the first time without an existing `ADMIN` in `users.dat`:
+On Render's Free tier, container file systems are stateless and spin down after 15 minutes of inactivity. To ensure seamless testing without having to re-register after spin-downs, ChainTickets automatically bootstraps standard accounts on startup:
 
-1. **Environment Variable Override**: If `ADMIN_PASSWORD` is defined, the `admin` account is created with this password.
-2. **Auto-Generated Credentials**: If `ADMIN_PASSWORD` is not set, a cryptographically secure 16-character random password is generated using `SecureRandom` and printed once to `stdout`:
-   ```text
-   First run: admin account created
-     username: admin
-     password: <generated-16-char-password>
-   Save this now, it will not be shown again
-   ```
-3. Once created, credentials persist in `users.dat`. Subsequent server restarts will not regenerate or overwrite the administrator password.
+| Account | Role | Default Password | Environment Variable Override |
+| --- | --- | --- | --- |
+| `admin` | `ADMIN` | Generated on first run (or set via env) | `ADMIN_PASSWORD` |
+| `user` | `USER` | `user12345` | Built-in fallback |
+| `alice` | `USER` | `correcthorse` | Built-in fallback |
+| `bob` | `USER` | `correcthorse` | Built-in fallback |
+| Custom User | `USER` | Defined via env | `USER_NAME` & `USER_PASSWORD` |
+
+- **One-Click Demo Login**: The `#/login` screen includes clickable chips (`user / user12345`, `alice / correcthorse`, `admin`) that auto-fill the login form instantly.
+- **Custom Persistent User on Render**: Set `USER_NAME` and `USER_PASSWORD` in the Render dashboard. ChainTickets will recreate your account with your credentials whenever the container wakes up.
+- **Full Ledger Persistence**: Attach a Render Persistent Disk (e.g. mounted at `/data`) and set `DATA_DIR=/data` to permanently keep all dynamic user registrations, ticket transfers, and blockchain blocks across container redeploys.
 
 ---
 

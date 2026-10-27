@@ -444,6 +444,33 @@ th { background: var(--surface-2); color: var(--muted); font-weight: 600; font-s
 .auth-card h2 { font-size: 1.8rem; }
 .auth-alt { margin: 20px 0 0; text-align: center; }
 .hint { margin-top: 14px; }
+.demo-accounts {
+    margin: 18px 0;
+    padding: 12px 14px;
+    background: var(--bg-soft);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.demo-label {
+    font-size: 0.76rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+}
+.demo-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.demo-chip {
+    padding: 4px 10px;
+    font-size: 0.78rem;
+    cursor: pointer;
+}
 
 .verdict {
     padding: 16px 22px;

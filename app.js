@@ -256,10 +256,43 @@ function authView(mode) {
         registering ? field('Confirm password', confirm) : null,
         error,
         submit);
+    const demoBox = !registering ? h('div', { class: 'demo-accounts' },
+        h('span', { class: 'demo-label' }, 'Demo Logins:'),
+        h('div', { class: 'demo-chips' },
+            h('button', {
+                type: 'button',
+                class: 'btn ghost small demo-chip',
+                onclick: () => {
+                    username.value = 'user';
+                    password.value = 'user12345';
+                    username.focus();
+                }
+            }, 'user / user12345'),
+            h('button', {
+                type: 'button',
+                class: 'btn ghost small demo-chip',
+                onclick: () => {
+                    username.value = 'alice';
+                    password.value = 'correcthorse';
+                    username.focus();
+                }
+            }, 'alice / correcthorse'),
+            h('button', {
+                type: 'button',
+                class: 'btn ghost small demo-chip',
+                onclick: () => {
+                    username.value = 'admin';
+                    password.value = '';
+                    password.focus();
+                }
+            }, 'admin')
+        )
+    ) : null;
     return h('div', { class: 'auth-wrap' },
         h('div', { class: 'card auth-card' },
             h('h2', null, registering ? 'Create your account' : 'Welcome back'),
             h('p', { class: 'muted' }, registering ? 'Request tickets and manage them in one place.' : 'Log in to manage your tickets.'),
+            demoBox,
             form,
             registering ? h('p', { class: 'hint muted small' }, 'Usernames use 3 to 20 letters, numbers or underscores. Passwords need at least 8 characters.') : null,
             h('p', { class: 'auth-alt muted' },

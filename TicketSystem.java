@@ -78,6 +78,15 @@ public class TicketSystem {
         return new Event(id, n, d, v, price);
     }
 
+    public synchronized void ensureInitialEvents() {
+        if (!getEvents().isEmpty()) {
+            return;
+        }
+        createEvent("Symphony Night", "2026-12-10", "Concert Hall", 120.0);
+        createEvent("Tech Summit 2026", "2026-11-15", "Convention Center", 75.0);
+        createEvent("Campus Music Fest", "2026-10-31", "Grand Amphitheater", 50.0);
+    }
+
     public synchronized Ticket issueTicket(String eventId, String owner, String requestId) {
         requireValid();
         String o = clean(owner, "Owner");

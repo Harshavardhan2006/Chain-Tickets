@@ -33,15 +33,21 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
+        String dataDirEnv = System.getenv("DATA_DIR");
+        Path dataDir = dataDirEnv != null && !dataDirEnv.trim().isEmpty() ? Path.of(dataDirEnv.trim()) : Path.of(".");
+        if (!Files.exists(dataDir)) {
+            Files.createDirectories(dataDir);
+        }
         try {
-            blockchain = new Blockchain(Path.of("chain.dat"));
-            users = new UserStore(Path.of("users.dat"));
-            requests = new RequestStore(Path.of("requests.dat"));
+            blockchain = new Blockchain(dataDir.resolve("chain.dat"));
+            users = new UserStore(dataDir.resolve("users.dat"));
+            requests = new RequestStore(dataDir.resolve("requests.dat"));
         } catch (IllegalStateException e) {
             System.err.println("Startup refused: " + e.getMessage());
             System.exit(1);
         }
         system = new TicketSystem(blockchain);
+        system.ensureInitialEvents();
         sessions = new Sessions();
         String envAdminPass = System.getenv("ADMIN_PASSWORD");
         String adminPassword = users.ensureAdmin(envAdminPass != null && !envAdminPass.trim().isEmpty() ? envAdminPass.trim() : null);
@@ -50,6 +56,29 @@ public class Main {
             System.out.println("  username: admin");
             System.out.println("  password: " + adminPassword);
             System.out.println("Save this now, it will not be shown again");
+        }
+        users.ensureUser("user", "user12345");
+        users.ensureUser("alice", "correcthorse");
+        users.ensureUser("bob", "correcthorse");
+        users.ensureUser("harsha_06", "user12345");
+        users.ensureUser("kanny_05", "user12345");
+        String envUserName = System.getenv("USER_NAME");
+        String envUserPass = System.getenv("USER_PASSWORD");
+        if (envUserName != null && !envUserName.trim().isEmpty() && envUserPass != null && envUserPass.length() >= 8) {
+            try {
+                users.ensureUser(envUserName.trim(), envUserPass.trim());
+            } catch (IllegalArgumentException ignored) {}
+        }
+        String seedUsers = System.getenv("SEED_USERS");
+        if (seedUsers != null && !seedUsers.trim().isEmpty()) {
+            for (String pair : seedUsers.split(",")) {
+                String[] parts = pair.split(":", 2);
+                if (parts.length == 2 && parts[1].length() >= 8) {
+                    try {
+                        users.ensureUser(parts[0].trim(), parts[1].trim());
+                    } catch (IllegalArgumentException ignored) {}
+                }
+            }
         }
 
         int port = 8090;
@@ -96,12 +125,12 @@ public class Main {
             }
             String token = sessions.create(user.username(), user.role());
             exchange.getResponseHeaders().add("Set-Cookie",
-                    "session=" + token + "; HttpOnly; SameSite=Strict; Path=/; Max-Age=7200");
+                    "session=" + token + "; HttpOnly; SameSite=Lax; Path=/; Max-Age=7200");
             return userJson(user.username(), user.role());
         });
         wire(server, "/api/auth/logout", "POST", (exchange, p) -> {
             sessions.destroy(sessionToken(exchange));
-            exchange.getResponseHeaders().add("Set-Cookie", "session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0");
+            exchange.getResponseHeaders().add("Set-Cookie", "session=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0");
             return "{\"ok\":true}";
         });
         wire(server, "/api/auth/me", "GET", (exchange, p) -> {

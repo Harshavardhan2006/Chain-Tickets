@@ -137,6 +137,19 @@ public class UserStore {
         return password;
     }
 
+    public void ensureUser(String username, String password) {
+        String name = normalize(username);
+        synchronized (this) {
+            if (users.containsKey(name)) {
+                return;
+            }
+        }
+        if (password == null || password.length() < 8 || password.length() > 128) {
+            return;
+        }
+        add(name, "USER", password);
+    }
+
     public User authenticate(String username, String password) {
         String name = username == null ? "" : username.trim().toLowerCase();
         Credential credential;
